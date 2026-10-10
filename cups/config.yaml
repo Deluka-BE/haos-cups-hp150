@@ -15,7 +15,7 @@ ports:
   631/tcp: 631
 ports_description:
   631/tcp: CUPS web interface and IPP (host networking; fixed port)
-watchdog: "http://[HOST]:631/"
+watchdog: "tcp://[HOST]:[PORT:631]"
 webui: "https://[HOST]:631"
 options:
   admin_password: ""
