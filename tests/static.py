@@ -5,12 +5,18 @@ import yaml
 
 root = Path(__file__).resolve().parents[1]
 config = yaml.safe_load((root / "cups/config.yaml").read_text())
-build = yaml.safe_load((root / "cups/build.yaml").read_text())
+dockerfile = (root / "cups/Dockerfile").read_text()
 repository = yaml.safe_load((root / "repository.yaml").read_text())
-assert config["version"] == "0.1.0"
+assert config["version"] == "0.1.1"
 assert set(config["arch"]) == {"amd64", "aarch64"}
-assert set(build["build_from"]) == set(config["arch"])
-assert all(value == "debian:trixie-slim" for value in build["build_from"].values())
+assert not (root / "cups/build.yaml").exists()
+assert dockerfile.splitlines()[0] == "FROM debian:trixie-slim"
+assert "BUILD_FROM" not in dockerfile
+assert f'ARG BUILD_VERSION={config["version"]}' in dockerfile
+assert 'io.hass.version="${BUILD_VERSION}"' in dockerfile
+assert 'io.hass.type="app"' in dockerfile
+assert 'io.hass.arch="${BUILD_ARCH}"' in dockerfile
+assert f'## {config["version"]}' in (root / "cups/CHANGELOG.md").read_text()
 assert config["usb"] and config["host_network"]
 assert config["schema"]["admin_password"] == "password"
 assert repository["url"] == config["url"]

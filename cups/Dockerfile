@@ -1,6 +1,6 @@
-ARG BUILD_FROM=debian:trixie-slim
-FROM ${BUILD_FROM}
+FROM debian:trixie-slim
 ARG BUILD_ARCH
+ARG BUILD_VERSION=0.1.1
 ENV DEBIAN_FRONTEND=noninteractive
 # Track Debian stable/security package updates on rebuild.
 # hadolint ignore=DL3008
@@ -22,8 +22,8 @@ RUN chmod 755 /usr/local/bin/*.sh \
     && driver-check.sh
 LABEL io.hass.name="CUPS HP Color Laser 150" \
       io.hass.description="Debian CUPS with official HP ULD 15x USB driver" \
-      io.hass.version="0.1.0" \
-      io.hass.type="addon" \
+      io.hass.version="${BUILD_VERSION}" \
+      io.hass.type="app" \
       io.hass.arch="${BUILD_ARCH}"
 EXPOSE 631
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \

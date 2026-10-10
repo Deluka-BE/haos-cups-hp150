@@ -1,4 +1,30 @@
-# Initial 0.1.0 validation
+# Validation
+
+## 0.1.1 install build fix
+
+Performed on 2026-10-10 in an amd64 Alpine workspace.
+
+- `python3 tests/static.py`: passed metadata/YAML, explicit Debian FROM,
+  removal of build.yaml/BUILD_FROM, version/changelog/label consistency,
+  amd64+aarch64 support, shell syntax, inline Python and archive exclusion.
+- ShellCheck 0.11.0 on all add-on shell scripts and tests/smoke.sh: passed.
+- Hadolint 2.12.0 on cups/Dockerfile and `git diff --check`: passed.
+- Compared metadata with current [Home Assistant app configuration docs](https://developers.home-assistant.io/docs/apps/configuration/):
+  explicit FROM, BUILD_ARCH/BUILD_VERSION and io.hass.type="app" labels.
+- Docker Hub's Debian trixie-slim index includes linux/amd64 and linux/arm64.
+  Downloaded and digest-verified the ARM64 base layer; its os-release identifies
+  trixie and usr/bin/apt-get is an AArch64 ELF executable.
+- Downloaded the official HP archive and verified its configured SHA256.
+  Both rastertospl and libscmssc.so are ELF64 AArch64 for aarch64 and ELF64
+  x86-64 for amd64; the required 15x PPD, color profile and EULA are present.
+  The HP installation and runtime scripts are unchanged.
+
+No Docker CLI/daemon or ARM binfmt emulation is available in this workspace.
+These ARM64 artifact checks do not execute the image or replace a full native
+aarch64 build/runtime test. No HAOS Supervisor or physical printer was tested
+for this patch. Initial runtime validation below applies to 0.1.0.
+
+## Initial 0.1.0 validation
 
 Performed on 2026-10-10 on a Linux amd64 Docker host.
 
