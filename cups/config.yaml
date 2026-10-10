@@ -1,0 +1,23 @@
+name: CUPS HP Color Laser 150
+version: "0.1.0"
+slug: cups_hp150
+description: CUPS 2.4 with HP's official USB Color Laser 15x driver
+url: https://github.com/Deluka-BE/haos-cups-hp150
+arch:
+  - amd64
+  - aarch64
+startup: services
+boot: auto
+init: false
+usb: true
+host_network: true
+ports:
+  631/tcp: 631
+ports_description:
+  631/tcp: CUPS web interface and IPP (host networking; fixed port)
+watchdog: "http://[HOST]:631/"
+webui: "https://[HOST]:631"
+options:
+  admin_password: ""
+schema:
+  admin_password: password
